@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>Humpty - Rackspace Monitoring Overview</title>
+    <meta http-equiv="refresh" content="60" />
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/mustache.js"></script>
+    <script src="js/monviews.js"></script>
+    <script>
+    
+    function testLogin() {
+        document.cookie = "zomg=zombieskin; path=/";
+        document.cookie = "jingy=zebras";
+        document.cookie = "lol=cats; expires=Wed Feb 12 11:08:50 2014";
+        var userIn = document.forms['login']['username'].value;
+        var passIn = document.forms['login']['password'].value;
+        var zinger = document.cookie;
+        alert(getCookie('lol'));
+    }
+    
+    function doLogin() {
+        var userIn = document.forms['login']['username'].value;
+        var passIn = document.forms['login']['password'].value;
+        
+        getAuthToken(userIn, passIn);
+    }
+    </script>
+     
+    <style type="text/css">
+        @import url(css/default.css);
+    </style>
+</head>
+
+
+<body class="letthebodies">
+    
+<script>
+</script>
+
+<div id="header">Humpty</div>
+<div id="table"></div>
+
+<div id="floatie">
+    <form name="login">
+        Username<br/>
+        <input type="text" name="username"><br/>
+        Password<br/>
+        <input type="password" name="password"><br/>
+        <a href="#" class="button" onClick="doLogin();">Login</a>
+    </form>
+</div>
+
+</body>
+</html>

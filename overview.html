@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>Humpty - Rackspace Monitoring Overview</title>
+    <meta http-equiv="refresh" content="60" />
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/mustache.js"></script>
+    <script src="js/monviews.js"></script>
+    <style type="text/css">
+        @import url(css/default.css);
+    </style>
+</head>
+
+
+<body class="letthebodies">
+    
+<script>
+    loadOverview();
+</script>
+
+<div id="header">Humpty</div>
+<div id="table"></div>
+
+<script type="text/html" id="entries">
+    <table>
+        <tr>
+            <th>Entity</th>
+            <th>Status</th>
+        </tr>
+        {{#.}} {{! iterate through all the rows in something }}
+            <tr>
+                <td>{{ entity.label }}</td>
+                <td class="statuses">
+                    {{ #latest_alarm_states }}
+                    <a href="#" class="STATUS {{state}}" data-checkid="{{check_id}}" data-alarmid="{{alarm_id}}" data-entityid="{{entity_id}}">{{state}}</a>
+                    {{/latest_alarm_states}}
+                </td>
+            </tr>
+        {{/.}} {{! end iteration }}
+    </table>
+</script>
+
+</body>
+</html>

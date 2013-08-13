@@ -1,0 +1,79 @@
+.STATUS {
+    text-indent: 9999px;
+    height: 10px;
+    width: 10px; 
+    display: inline-block;
+    margin-right: 10px;
+    
+}
+
+.OK {
+   /* background: url(img/monitorok.png) no-repeat; */
+   background: green;
+}
+
+.OK:hover {
+    
+}
+
+.WARNING {
+    /* background: url(img/monitorwarning.png) no-repeat; */
+    background: yellow;
+}
+
+.CRITICAL {
+    /* background: url(img/monitorcritical.png) no-repeat; */
+    background: red;
+}
+
+body, table {
+    font-family: monaco, courier;
+    font-size: small;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    
+}
+
+.letthebodies {
+    background: #800000;
+}
+
+#header {
+    width: 100%;
+    background: #303030;
+    height: 30px;
+    color: #ffffff;
+    font-family: Arial, Helvetica;
+}
+
+#floatie {
+    width: 400px;
+    background: #ffffff;
+    font-family: Arial, Helvetica;
+    height: 275px;
+    margin: auto;
+    margin-top: 20%;
+}
+
+.button {
+    display: inline-block;
+    padding: 3px 5px;
+    border: 1px solid #000;
+    background: #eee;
+    text-decoration: none;
+}
+
+#table {
+    width: 600;
+    margin: auto;
+    background: white;
+}
+
+td {
+    padding: 5px;
+}
+
+.statuses {
+    text-align: right;
+}
