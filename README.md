@@ -19,4 +19,6 @@ Put string values for APIKEY and APIUSER in any python file
 
 Set the HUMPTY_CONFIG environment variable then run python on the application
 
-    $ HUMPTY_CONFIG=anywhere.py python website/web.py
+    (humpty)aluminum13:humpty$ HUMPTY_CONFIG=~/.config/humpty.py python website/web.py
+     * Running on http://127.0.0.1:5000/
+     * Restarting with reloader

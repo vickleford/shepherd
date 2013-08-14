@@ -4,7 +4,7 @@ from rackspace import identity
 from rackspace.monitoring import MonitoringClient
 
 app = Flask(__name__)
-app.config.from_object('websiteconfig')
+app.config.from_envvar('HUMPTY_CONFIG')
 
 
 identity_response = identity.auth_with_key(app.config.get('APIUSER'), 
