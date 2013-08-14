@@ -1,4 +1,4 @@
-.STATUS {
+.STATUSX {
     text-indent: 9999px;
     height: 10px;
     width: 10px; 
@@ -7,23 +7,24 @@
     
 }
 
-.OK {
-   /* background: url(img/monitorok.png) no-repeat; */
-   background: green;
+.STATUS {
+    text-decoration: none;
+    font-size: 12px;
 }
 
-.OK:hover {
-    
+.OK {
+   /* background: url(img/monitorok.png) no-repeat; */
+   color: green;
 }
 
 .WARNING {
     /* background: url(img/monitorwarning.png) no-repeat; */
-    background: yellow;
+    color: orange;
 }
 
 .CRITICAL {
     /* background: url(img/monitorcritical.png) no-repeat; */
-    background: red;
+    color: red;
 }
 
 body, table {
@@ -32,7 +33,6 @@ body, table {
     margin-top: 0px;
     margin-left: 0px;
     margin-right: 0px;
-    
 }
 
 .letthebodies {
@@ -45,15 +45,17 @@ body, table {
     height: 30px;
     color: #ffffff;
     font-family: Arial, Helvetica;
+    padding: 5px;
 }
 
-#floatie {
-    width: 400px;
+#content {
+    width: 80%;
     background: #ffffff;
     font-family: Arial, Helvetica;
-    height: 275px;
     margin: auto;
-    margin-top: 20%;
+    margin-top: 35px;
+    border-radius: 5px;
+    padding: 15px;
 }
 
 .button {
@@ -62,16 +64,19 @@ body, table {
     border: 1px solid #000;
     background: #eee;
     text-decoration: none;
+    margin-top: 10px;
 }
 
 #table {
     width: 600;
-    margin: auto;
     background: white;
+    margin: auto;
 }
 
 td {
-    padding: 5px;
+    padding: 0px;
+    white-space:nowrap;
+    padding-bottom: 5px;
 }
 
 .statuses {

@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Alarm{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>{{ alarm['id']|e }}</h1>
+Label: {{ alarm['label']|e }}<br/>
+Check ID: {{ alarm['check_id']|e }}<br/>
+Created: {{ alarm['created_at']|e }}<br/>
+Disabled: {{ alarm['disabled']|e }}<br/>
+Notification Plan: {{ alarm['notification_plan_id']|e }}<br/>
+Nothing at all: {{ alarm['asdfljksf']|e }}<br/>
+Criteria:<br/>
+<form>
+    <textarea rows="15" cols="60">
+        {{ alarm['criteria']|e }}
+    </textarea>
+</form>
+{% endblock %}

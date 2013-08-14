@@ -1,0 +1,15 @@
+<!doctype html>
+<html>
+    <head>
+        {% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <title>{% block title %}{% endblock %} - Humpty: Rackspace Monitoring Dashboard</title>
+        {% endblock %}
+    </head>
+    
+    
+<body class="letthebodies">
+    <div id="header">Humpty</div>
+    <div id="content">{% block content %}{% endblock %}</div>
+</body>
+</html>
