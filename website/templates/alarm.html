@@ -1,7 +1,10 @@
 {% extends "layout.html" %}
 {% block title %}Alarm{% endblock %}
 {% block head %}
-  {{ super() }}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='mustache.js') }}"></script>
+        <script src="{{ url_for('static', filename='jquery-1.10.2.min.js') }}"></script> 
+        <script src="{{ url_for('static', filename='alarmhistory.js') }}"></script>
 {% endblock %}
 {% block content %}
 <h1>{{ alarm['id']|e }}</h1>
@@ -10,11 +13,75 @@ Check ID: {{ alarm['check_id']|e }}<br/>
 Created: {{ alarm['created_at']|e }}<br/>
 Disabled: {{ alarm['disabled']|e }}<br/>
 Notification Plan: {{ alarm['notification_plan_id']|e }}<br/>
-Nothing at all: {{ alarm['asdfljksf']|e }}<br/>
 Criteria:<br/>
 <form>
-    <textarea rows="15" cols="60">
+    <textarea readonly rows="15" cols="60">
         {{ alarm['criteria']|e }}
     </textarea>
 </form>
+<hr/>
+<a href="#" onClick="discoverHistory('{{ entity|e }}', '{{ alarm['id']|e }}');">View alarm history</a>
+
+<div id="discoverTarget"></div>
+<div id="historylistTarget"></div>
+<div id="historydetailsTarget"></div>
+
+{% raw %}
+<script type="text/html" id="discover">
+<h3>Available Alarm Histories</h3>
+<ul>
+<lh>History available for:</lh>
+{{#check_ids}}
+<li><!-- {{ entity_id }} {{ alarm_id }} --><a href="#" onClick="listHistory('{{entity_id}}', '{{alarm_id}}', '{{.}}')">{{.}}</a>
+{{/check_ids}}
+</ul>
+</script>
+<hr/>
+{% endraw %}
+
+{% raw %}
+<script type="text/html" id="historylist">
+<hr/>
+<h3>Alarm History Summary</h3>
+{{#values}}
+<ul>
+<lh>ID: {{id}}</lh>
+    <li>Timestamp: {{timestamp}}</li>
+    <li>Transaction ID: {{transaction_id}}</li>
+    <li>Status: {{status}}</li>
+    <li>State: {{state}}</li>
+    <li>Previous State: {{previous_state}}</li>
+    <li>Notification Results
+        {{#notification_results}}
+        <ul>
+        <lh>Notification ID: {{notification_id}}</lh>
+        <li>Notification Type: {{notification_type}}</li>
+         <!-- <li>Notification Details: {{notification_details}}</li> this needs to be broken out -->
+         <li>In Progress: {{in_progress}}</li>
+         <li>Success: {{success}}</li>
+         <li>attempts
+            {{#attempts}}
+            <ul>
+                <li>Origin: {{from}}</li>
+                <li>Message: {{message}}</li>
+            </ul>
+            {{/attempts}}
+         </li>
+        </ul>
+        {{/notification_results}}
+    </li>
+</ul>
+{{/values}}
+Showing {{metadata.count}} entries with limit {{metadata.limit}}
+</script>
+{% endraw %}
+
+{% raw %}
+<script type="text/html" id="historydetails">
+<hr/>
+<h3>Alarm Notification History Details</h3>
+</script>
+{% endraw %}
+
+<a href="{{ url_for('overview') }}">Overview</a>
 {% endblock %}

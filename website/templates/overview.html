@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block title %}Overview{% endblock %}
 {% block head %}
-  {{ super() }}
-<meta http-equiv="refresh" content="60">
+        {{ super() }}
+        <meta http-equiv="refresh" content="60">
 {% endblock %}
 {% block content %}
 <table>
@@ -17,11 +17,11 @@
         <td>
         <a href="{{ url_for('alarm', entityid=l['entity_id'], alarmid=l['alarm_id']) }}" class="STATUS">
         {% if l['state'] == "OK" %}
-        <span class="STATUS OK"><img src="{{ url_for('static', filename='monitorok.png') }}" data-checkid="{{ l['check_id']|e }}" data-alarmid="{{ l['alarm_id']|e }}" data-entityid="{{ l['entity_id'] }}" alt="{{ labels[l['alarm_id']]|e }}"/>{{ labels[l['alarm_id']]|e }}</span>
+        <span class="STATUS OK"><!--<img src="{{ url_for('static', filename='monitorok.png') }}" data-checkid="{{ l['check_id']|e }}" data-alarmid="{{ l['alarm_id']|e }}" data-entityid="{{ l['entity_id'] }}" alt="{{ labels[l['alarm_id']]|e }}"/>-->{{ labels[l['alarm_id']]|e }}</span>
         {% elif l['state'] == "WARNING" %}
-        <span class="STATUS WARNING"><img src="{{ url_for('static', filename='monitorwarning.png') }}" data-checkid="{{ l['check_id']|e }}" data-alarmid="{{ l['alarm_id']|e }}" data-entityid="{{ l['entity_id'] }}" alt="{{ labels[l['alarm_id']]|e }}"/>{{ labels[l['alarm_id']]|e }}</span>
+        <span class="STATUS WARNING"><!--<img src="{{ url_for('static', filename='monitorwarning.png') }}" data-checkid="{{ l['check_id']|e }}" data-alarmid="{{ l['alarm_id']|e }}" data-entityid="{{ l['entity_id'] }}" alt="{{ labels[l['alarm_id']]|e }}"/>-->{{ labels[l['alarm_id']]|e }}</span>
         {% else %}
-        <span class="STATUS CRITICAL"><img src="{{ url_for('static', filename='monitorcritical.png') }}" data-checkid="{{ l['check_id']|e }}" data-alarmid="{{ l['alarm_id']|e }}" data-entityid="{{ l['entity_id'] }}" alt="{{ labels[l['alarm_id']]|e }}"/>{{ labels[l['alarm_id']]|e }}</span>
+        <span class="STATUS CRITICAL"><!--<img src="{{ url_for('static', filename='monitorcritical.png') }}" data-checkid="{{ l['check_id']|e }}" data-alarmid="{{ l['alarm_id']|e }}" data-entityid="{{ l['entity_id'] }}" alt="{{ labels[l['alarm_id']]|e }}"/>-->{{ labels[l['alarm_id']]|e }}</span>
         {% endif %}
         </a>
         </td>

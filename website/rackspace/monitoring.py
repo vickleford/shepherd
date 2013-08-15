@@ -33,3 +33,30 @@ class MonitoringClient(object):
         r = requests.get(url, headers=self.headers)
         
         return r.json()
+        
+    def discover_alarm_history(self, entityid, alarmid):
+        """Return json for the checks on an alarm history discovery."""
+        
+        url = "{0}/entities/{1}/alarms/{2}/notification_history".format(self.endpoint, entityid, alarmid)
+        
+        r = requests.get(url, headers=self.headers)
+        
+        return r.json()
+        
+    def list_alarm_history(self, entityid, alarmid, checkid):
+        """Return the list of alarm notification histories."""
+        
+        url = "{0}/entities/{1}/alarms/{2}/notification_history/{3}".format(self.endpoint, entityid, alarmid, checkid)
+        
+        r = requests.get(url, headers=self.headers)
+        
+        return r.json()
+                
+    def get_alarm_history(self, entityid, alarmid, checkid, uuid):
+        """Return an alarm's notification history."""
+
+        url = "{0}/entities/{1}/alarms/{2}/notification_history/{3}/{4}".format(self.endpoint, entityid, alarmid, checkid, uuid)
+
+        r = requests.get(url, headers=self.headers)
+
+        return r.json()

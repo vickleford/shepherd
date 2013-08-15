@@ -1,4 +1,4 @@
-from flask import Flask, session, g, render_template
+from flask import Flask, session, g, render_template, jsonify
 
 from rackspace import identity
 from rackspace.monitoring import MonitoringClient
@@ -35,12 +35,32 @@ def overview():
 def alarm(entityid, alarmid):
     details = rax_mon.get_alarm(entityid, alarmid)
     
-    return render_template('alarm.html', alarm=details)
+    return render_template('alarm.html', entity=entityid, alarm=details)
     
+
+@app.route('/history/<entityid>/<alarmid>')
+def alarm_history(entityid, alarmid):
+    details = rax_mon.discover_alarm_history(entityid, alarmid)
+    details.update({'entity_id': entityid, 'alarm_id': alarmid})
     
-@app.route('/history')
-def alarm_history():
-    pass
+    return jsonify(details)
+
+
+@app.route('/history/<entityid>/<alarmid>/<checkid>')
+def list_alarm_history(entityid, alarmid, checkid):
+    details = rax_mon.list_alarm_history(entityid, alarmid, checkid)
+    details.update({'entity_id': entityid, 'alarm_id': alarmid})
+    
+    return jsonify(details)
+  
+  
+@app.route('/history/<entityid>/<alarmid>/<checkid>/<uuid>')
+def get_alarm_history(entityid, alarmid, checkid, uuid):
+    details = rax_mon.get_alarm_history(entityid, alarmid, checkid, uuid)
+    details.update({'entity_id': entityid, 'alarm_id': alarmid})
+    
+    return jsonify(details)
+
     
 if __name__ == '__main__':
     app.run(debug=True)
