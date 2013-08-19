@@ -23,7 +23,7 @@
 
 .WARNING {
     /* background: url(img/monitorwarning.png) no-repeat; */
-    color: orange;
+    background: orange;
 }
 
 .CRITICAL {
