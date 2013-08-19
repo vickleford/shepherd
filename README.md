@@ -1,10 +1,4 @@
-_Humpty Dumpty sat on the wall_,
-
-_Humpty Dumpty had a great fall_
-
-Oh wait, no, those were our monitors... 
-
-Humpty is a MaaS dashboard to show you what's going on with your monitors and alerts at a glance. 
+Shepherd is a MaaS dashboard to show you what's going on with your monitors and alerts at a glance. 
 It's supposed to be read-only so you can distribute the link to it for other people to view.
 
 ### Configuring
@@ -17,8 +11,8 @@ Put string values for APIKEY and APIUSER in any python file
     
 ### Running
 
-Set the HUMPTY_CONFIG environment variable then run python on the application
+Set the SHEPHERD_CONFIG environment variable then run python on the application
 
-    (humpty)aluminum13:humpty$ HUMPTY_CONFIG=~/.config/humpty.py python website/web.py
+    (shepherd)aluminum13:shepherd$ SHEPHERD_CONFIG=~/.config/shepherd.py python website/web.py
      * Running on http://127.0.0.1:5000/
      * Restarting with reloader

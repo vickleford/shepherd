@@ -1,9 +1,10 @@
+from os.path import expanduser
 from flask import Flask, session, g, render_template, jsonify
 
 from rackspace.monitoring import MonitoringClient
 
 app = Flask(__name__)
-app.config.from_envvar('HUMPTY_CONFIG')
+app.config.from_envvar(expanduser('SHEPHERD_CONFIG'))
 
 rax_mon = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
 
