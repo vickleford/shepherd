@@ -1,36 +1,71 @@
 import requests
 import json
 
+from rackspace import identity
+
 
 class MonitoringClient(object):
     
-    def __init__(self, endpoint, token):
-        self.headers = {'Content-Type': 'application/json', 'X-Auth-Token': token}
-        self.token = token
-        self.endpoint = endpoint
+    def __init__(self, user, key):
+        self.user = user
+        self.key = key
+        
+        self.token = None
+        self.endpoint = None
+        self.headers = { 'Content-Type': 'application/json',
+                         'X-Auth-Token': self.token }
+        
+        self._authenticate()
+        
+    def _authenticate(self):
+        """Get a new authentication token."""
+        identity_response = identity.auth_with_key(self.user, self.key)
+        self.token = identity.get_token(identity_response)
+        self.endpoint = identity.get_maas_endpoint(identity_response)
+        self.headers.update({'X-Auth-Token': self.token})
 
+    def _send_request(self, 
+                      url, 
+                      method=requests.get,
+                      params=None, 
+                      payload=None):
+        """Send request to url and ensure we can keep a valid token.
+        
+        url where to send the request to:
+        params: a dict of what you would put in the query string
+        method: requests,get, requests.post, what you want to do...
+        headers: a dict of headers
+        payload: a json dict of the request body
+        """
+        response = method(url, params=params, data=payload, headers=self.headers)
+        if response.status_code == 401:
+            self._authenticate()
+            response = method(url, params=params, data=payload, headers=headers)
+        
+        return response
+        
     def get_overview(self, entities=None):
         """Return the overview for this account."""
-        
+
         url = "{0}/views/overview".format(self.endpoint)
-        
-        if entities is not None:
+
+        try:
             qs = {}
             for e in entities:
                 qs.update({'entityId': e})
-                
-            r = requests.get(url, headers=self.headers, params=qs)
-        else:
-            r = requests.get(url, headers=self.headers)
+            r = self._send_request(url, params=qs)
+        except TypeError:
+            # that's ok, we just weren't given any entities
+            r = self._send_request(url)            
             
         return r.json()
-        
+                
     def get_alarm(self, entityid, alarmid):
         """Return the details for an alarm."""
         
         url = "{0}/entities/{1}/alarms/{2}".format(self.endpoint, entityid, alarmid)
         
-        r = requests.get(url, headers=self.headers)
+        r = self._send_request(url)
         
         return r.json()
         
@@ -39,7 +74,7 @@ class MonitoringClient(object):
         
         url = "{0}/entities/{1}/alarms/{2}/notification_history".format(self.endpoint, entityid, alarmid)
         
-        r = requests.get(url, headers=self.headers)
+        r = self._send_request(url)
         
         return r.json()
         
@@ -48,7 +83,7 @@ class MonitoringClient(object):
         
         url = "{0}/entities/{1}/alarms/{2}/notification_history/{3}".format(self.endpoint, entityid, alarmid, checkid)
         
-        r = requests.get(url, headers=self.headers)
+        r = self._send_request(url)
         
         return r.json()
                 
@@ -57,6 +92,6 @@ class MonitoringClient(object):
 
         url = "{0}/entities/{1}/alarms/{2}/notification_history/{3}/{4}".format(self.endpoint, entityid, alarmid, checkid, uuid)
 
-        r = requests.get(url, headers=self.headers)
+        r = self._send_request(url)
 
         return r.json()

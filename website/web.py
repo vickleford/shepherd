@@ -1,19 +1,11 @@
 from flask import Flask, session, g, render_template, jsonify
 
-from rackspace import identity
 from rackspace.monitoring import MonitoringClient
 
 app = Flask(__name__)
 app.config.from_envvar('HUMPTY_CONFIG')
 
-
-identity_response = identity.auth_with_key(app.config.get('APIUSER'), 
-                                               app.config.get('APIKEY'))
-                                               
-rax_token = identity.get_token(identity_response)
-rax_maas = identity.get_maas_endpoint(identity_response)
-rax_mon = MonitoringClient(rax_maas, rax_token)
-
+rax_mon = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
 
 @app.route('/overview')
 def overview():
