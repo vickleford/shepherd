@@ -21,8 +21,14 @@ def overview():
             for alarm in ent['alarms']:
                 if alarm['id'] == las['alarm_id']:
                     labels.update({las['alarm_id']: alarm['label']})
-            
-    return render_template('overview.html', values=details['values'], meta=details['metadata'], labels=labels)
+    
+    # don't blow up on an entity without a label        
+    try:
+        sorted_vals = sorted(details['values'], key=lambda x: x['entity']['label'])
+    except KeyError:
+        sorted_vals = details['values']
+        
+    return render_template('overview.html', values=sorted_vals, meta=details['metadata'], labels=labels)
 
 
 @app.route('/')
