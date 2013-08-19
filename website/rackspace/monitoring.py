@@ -1,7 +1,7 @@
 import requests
 import json
 
-from rackspace import identity
+import identity
 
 
 class MonitoringClient(object):

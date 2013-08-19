@@ -1,5 +1,5 @@
 from os.path import expanduser
-from flask import Flask, session, g, render_template, jsonify
+from flask import Flask, session, g, render_template, jsonify, redirect, url_for
 
 from rackspace.monitoring import MonitoringClient
 
@@ -8,6 +8,7 @@ app.config.from_envvar(expanduser('SHEPHERD_CONFIG'))
 
 rax_mon = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
 
+    
 @app.route('/overview')
 def overview():
     details = rax_mon.get_overview()
@@ -22,6 +23,11 @@ def overview():
                     labels.update({las['alarm_id']: alarm['label']})
             
     return render_template('overview.html', values=details['values'], meta=details['metadata'], labels=labels)
+
+
+@app.route('/')
+def index():
+    return redirect(url_for('overview'))
 
 
 @app.route('/entity/<entityid>/alarm/<alarmid>')
