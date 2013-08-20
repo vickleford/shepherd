@@ -24,6 +24,19 @@ function listHistory(entityid, alarmid, checkid) {
 }
 
 
+function getHistory(entityid, alarmid, checkid, uuid) {
+    $.ajax({
+        url: "/history/" + entityid + "/" + alarmid + "/" + checkid + "/" + uuid,
+        dataType: "json",
+        cache: false,
+        success: function(data) {
+            var template = $('#historydetails').html();
+            $('#historydetailsTarget').html(Mustache.to_html(template, data));
+        }
+    });
+}
+
+
 /* patrick's sort filter 
 data.values.sort(function(a, b) {
                     var textA = a.entity.label.toUpperCase();
