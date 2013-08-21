@@ -17,6 +17,10 @@ function listHistory(entityid, alarmid, checkid) {
         dataType: "json",
         cache: false,
         success: function(data) {
+            for (var i = 0; i < data['values'].length; i++) {
+                ts = data['values'][i]['timestamp']
+                data['values'][i]['timestamp'] = new Date(ts).toUTCString();
+            }
             var template = $('#historylist').html();
             $('#historylistTarget').html(Mustache.to_html(template, data));
         }

@@ -1,10 +1,13 @@
 from os.path import expanduser
 from flask import Flask, session, g, render_template, jsonify, redirect, url_for
+from filters import ms2utc
 
 from rackspace.monitoring import MonitoringClient
 
+
 app = Flask(__name__)
 app.config.from_envvar(expanduser('SHEPHERD_CONFIG'))
+app.jinja_env.filters['ms2utc'] = ms2utc
 
 rax_mon = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
 
