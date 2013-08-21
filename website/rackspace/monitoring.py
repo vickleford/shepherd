@@ -95,3 +95,33 @@ class MonitoringClient(object):
         r = self._send_request(url)
 
         return r.json()
+        
+    def list_metrics(self, entityid, checkid):
+        """Return a list of metrics associated with your check."""
+        
+        url = "{0}/entities/{1}/checks/{2}/metrics".format(self.endpoint, entityid, checkid)
+        
+        r = self._send_request(url)
+        
+        return r.json()
+        
+    def fetch_data_points(self, entityid, checkid, metricname, **qs):
+        """Return data points between two points in time for metricname on checkid.
+        
+        qs is the querystring and controls the data points returned.
+            Required: from=msSinceEpoch 
+            Required: to=msSinceEpoch
+        
+            Required:
+                points=numberPoints
+                or resolution=granulatiry
+        
+            Optional: select=average|variance|min|max
+                Since we can add multiple select parameters, 
+                should we expect this to come in as a list?
+        
+        http://docs.rackspace.com/cm/api/v1.0/cm-devguide/content/metrics-api.html#fetch-data-points
+        http://docs.rackspace.com/cm/api/v1.0/cm-devguide/content/metrics-api.html#metrics-data-granularity
+        """
+        
+        pass
