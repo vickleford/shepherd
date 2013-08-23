@@ -11,12 +11,23 @@ function discoverHistory(entityid, alarmid) {
 }
 
 
-function listHistory(entityid, alarmid, checkid) {
+function listHistory(entityid, alarmid, checkid, marker) {
+    if (typeof marker == 'undefined') {
+        var url = "/history/" + entityid + "/" + alarmid + "/" + checkid;
+    } else {
+        var url = "/history/" + entityid + "/" + alarmid + "/" + checkid + "?marker=" + marker;
+    }
+    
     $.ajax({
-        url: "/history/" + entityid + "/" + alarmid + "/" + checkid,
+        url: url,
         dataType: "json",
         cache: false,
         success: function(data) {
+            // preserve the IDs for pagination calls later
+            data['metadata']['entity_id'] = entityid;
+            data['metadata']['check_id'] = checkid;
+            data['metadata']['alarm_id'] = alarmid;
+            
             for (var i = 0; i < data['values'].length; i++) {
                 ts = data['values'][i]['timestamp']
                 data['values'][i]['timestamp'] = new Date(ts).toUTCString();

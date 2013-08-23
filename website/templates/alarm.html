@@ -42,7 +42,7 @@ Criteria:<br/>
 {% raw %}
 <script type="text/html" id="historylist">
 <hr/>
-<h3>Alarm History Summary</h3>
+<h3>Alarm History Details</h3>
 {{#values}}
 <ul>
 <lh>ID: {{id}}</lh>
@@ -72,7 +72,7 @@ Criteria:<br/>
     </li>
 </ul>
 {{/values}}
-Showing {{metadata.count}} entries with limit {{metadata.limit}}
+Showing {{metadata.count}} entries with {{metadata.limit}} per page | <a href="#" onClick="listHistory('{{metadata.entity_id}}', '{{metadata.alarm_id}}', '{{metadata.check_id}}', '{{metadata.next_marker}}');">Next</a>
 </script>
 {% endraw %}
 
@@ -82,6 +82,4 @@ Showing {{metadata.count}} entries with limit {{metadata.limit}}
 <h3>Alarm Notification History Details</h3>
 </script>
 {% endraw %}
-
-<a href="{{ url_for('overview') }}">Overview</a>
 {% endblock %}

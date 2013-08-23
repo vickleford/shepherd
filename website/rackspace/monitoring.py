@@ -37,12 +37,40 @@ class MonitoringClient(object):
         headers: a dict of headers
         payload: a json dict of the request body
         """
+                
         response = method(url, params=params, data=payload, headers=self.headers)
         if response.status_code == 401:
             self._authenticate()
             response = method(url, params=params, data=payload, headers=headers)
         
         return response
+        
+    def get_entity(self, entityid):
+        """Return an entity represented in JSON."""
+        
+        url = "{0}/entities/{1}".format(self.endpoint, entityid)
+        
+        r = self._send_request(url)
+        
+        return r.json()
+        
+    def get_checks(self, entityid):
+        """Return checks for an entity represented in JSON."""
+
+        url = "{0}/entities/{1}/checks".format(self.endpoint, entityid)
+
+        r = self._send_request(url)
+
+        return r.json()
+    
+    def get_alarms(self, entityid):
+        """Return alarms for an entity represented in JSON."""
+
+        url = "{0}/entities/{1}/alarms".format(self.endpoint, entityid)
+
+        r = self._send_request(url)
+
+        return r.json()
         
     def get_overview(self, entities=None):
         """Return the overview for this account."""
@@ -78,12 +106,12 @@ class MonitoringClient(object):
         
         return r.json()
         
-    def list_alarm_history(self, entityid, alarmid, checkid):
+    def list_alarm_history(self, entityid, alarmid, checkid, limit=None, marker=None):
         """Return the list of alarm notification histories."""
         
         url = "{0}/entities/{1}/alarms/{2}/notification_history/{3}".format(self.endpoint, entityid, alarmid, checkid)
         
-        r = self._send_request(url)
+        r = self._send_request(url, params={'marker': marker, 'limit': limit})
         
         return r.json()
                 

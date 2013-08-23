@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block title %}{{ entity['label']|e }}{% endblock %}
+{% block head %}
+        {{ super() }}
+        <meta http-equiv="refresh" content="60">
+{% endblock %}
+{% block content %}
+
+{% for value in overview %}
+    {%- for l in value['latest_alarm_states'] -%}
+    <a href="{{ url_for('alarm', entityid=l['entity_id'], alarmid=l['alarm_id']) }}" class="STATUS {{ l['state'] }}">{{ labels[l['alarm_id']]|e }}</a>
+    {% endfor %} 
+{% endfor %}
+
+<h1>{{ entity['label']|e }}</h1>
+
+<table>
+    <tr>
+        <td>ID</td>
+        <td>{{ entity['id']|e }}</td>
+    </tr>
+    <tr>
+        <td>Label</td>
+        <td>{{ entity['label']|e }}</td>
+    </tr>
+</table>
+
+<h3>IP Addresses</h3>
+<table>
+    {% for alias in entity['ip_addresses']|sort %}
+    <tr>
+        <td>{{ alias|e }}</td>
+        <td>{{ entity['ip_addresses'][alias]|e }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan=2>No results</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Metadata</h3>
+{% if entity['metadata'] is iterable() %}
+<table>
+    {% for metaname in entity['metadata'] %}
+    <tr>
+        <td>{{ metaname|e }}</td>
+        <td>{{ entity['metadata'][metaname]|e }}</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan=2>No metadata</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+No metadata
+{% endif %}
+
+<hr/>
+
+<h2>Checks</h2>
+{% for ch in checks['values']|sort(attribute='label') %}
+<ul>
+    <lh><a name={{ ch['id']|e }}>{{ ch['id']|e }}</a></lh>
+    <li>Label: {{ ch['label']|e }}</li>
+    <li>Type: {{ ch['type']|e }}</li>
+    <li>Disabled: {{ ch['disabled']|e }}</li>
+    <li>Created: {{ ch['created_at']|ms2utc }}</li>
+    <li>Updated: {{ ch['updated_at']|ms2utc }}</li>
+    <li>Timeout: {{ ch['timeout']|e }}</li>
+    <li>Period: {{ ch['period']|e }}</li>
+    <li>Target alias: {{ ch['target_alias']|e }}</li>
+    {% if ch['monitoring_zones_poll'] is iterable() %}
+    <li>Monitoring zones
+        <ul>
+            {% for zone in ch['monitoring_zones_poll']|sort %}
+            <li>{{ zone|e }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endif %}
+    <li>Details
+        <ul>
+            {% for detail in ch['details']|sort %}
+            <li>{{ detail|e }}: {{ ch['details'][detail]|e }}</li>
+            {% endfor %}
+        </ul>
+    </li>
+</ul>
+{% endfor %}
+Showing {{ checks['metadata']['count'] }} results | <a href="#">Top</a>
+<hr/>
+
+<h2>Alarms</h2>
+{% for al in alarms['values']|sort(attribute='label') %}
+<ul>
+    <lh>{{ al['id']|e }}</lh>
+    <li>Label: {{ al['label']|e }}</li>
+    <li>Check ID: <a href="#{{ al['check_id']|e }}">{{ al['check_id']|e }}</a></li>
+    <li>Notification Plan ID: {{ al['notification_plan_id']|e }}</li>
+    <li>Created: {{ al['created_at']|ms2utc }}</li>
+    <li>Updated: {{ al['updated_at']|ms2utc }}</li>
+    <li>Disabled: {{ al['disabled']|e }}</li>
+    <li>Criteria: <form><textarea readonly rows="10" cols="75">{{ al['criteria']|e }}</textarea></form></li>
+</ul>
+{% endfor %}
+Showing {{ alarms['metadata']['count'] }} results | <a href="#">Top</a>
+{% endblock %}
