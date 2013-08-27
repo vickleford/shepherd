@@ -23,6 +23,22 @@
         <td>Label</td>
         <td>{{ entity['label']|e }}</td>
     </tr>
+    <tr>
+        <td>Created</td>
+        <td>{{ entity['created_at']|ms2utc }}</td>
+    </tr>
+    <tr>
+        <td>Updated</td>
+        <td>{{ entity['updated_at']|ms2utc }}</td>
+    </tr>
+    <tr>
+        <td>Agent ID</td>
+        <td>{{ entity['agent_id']|e }}</td>
+    </tr>
+    <tr>
+        <td>Managed</td>
+        <td>{{ entity['managed']|e }}</td>
+    </tr>
 </table>
 
 <h3>IP Addresses</h3>
