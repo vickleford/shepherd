@@ -54,6 +54,15 @@ class MonitoringClient(object):
         
         return r.json()
         
+    def get_check(self, entityid, checkid):
+        """Return details about a single check."""
+        
+        url = "{0}/entities/{1}/checks/{2}".format(self.endpoint, entityid, checkid)
+        
+        r = self._send_request(url)
+        
+        return r.json()
+        
     def get_checks(self, entityid):
         """Return checks for an entity represented in JSON."""
 
@@ -152,4 +161,7 @@ class MonitoringClient(object):
         http://docs.rackspace.com/cm/api/v1.0/cm-devguide/content/metrics-api.html#metrics-data-granularity
         """
         
-        pass
+        url = "{0}/entities/{1}/checks/{2}/metrics/{3}/plot".format(self.endpoint, entityid, checkid, metricname)
+        r = self._send_request(url, params=qs)
+        
+        return r.json()

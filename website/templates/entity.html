@@ -78,7 +78,7 @@ No metadata
 <h2>Checks</h2>
 {% for ch in checks['values']|sort(attribute='label') %}
 <ul>
-    <lh><a name={{ ch['id']|e }}>{{ ch['id']|e }}</a></lh>
+    <lh><a href="{{ url_for('metrics', entityid=entity['id'], checkid=ch['id']) }}" name={{ ch['id']|e }}>{{ ch['id']|e }}</a></lh>
     <li>Label: {{ ch['label']|e }}</li>
     <li>Type: {{ ch['type']|e }}</li>
     <li>Disabled: {{ ch['disabled']|e }}</li>

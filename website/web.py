@@ -99,6 +99,32 @@ def get_alarm_history(entityid, alarmid, checkid, uuid):
     
     return jsonify(details)
 
+
+@app.route('/metrics/<entityid>/<checkid>')
+def metrics(entityid, checkid):
+    check = rax_mon.get_check(entityid, checkid)
+    metrics = rax_mon.list_metrics(entityid, checkid)
+
+    return render_template('metrics.html', entityid=entityid, check=check, metrics=metrics)
+        
+
+@app.route('/metrics/<entityid>/<checkid>/<metricname>')
+def get_metrics(entityid, checkid, metricname):
+    params = { 'from': request.args.get('starttime'),
+               'to': request.args.get('endtime'),
+               'points': request.args.get('density'),
+               'metric': metricname
+             }
+             
+    plot = rax_mon.fetch_data_points(entityid, checkid, metricname, **params)
+    
+    return jsonify(plot)
+    
+    
+@app.route('/d3-line-chart')
+def tutorial():
+    return render_template('tutorial.html')
+    
     
 if __name__ == '__main__':
     app.run(debug=True)
