@@ -98,4 +98,25 @@
         
 </script>
 
+<form name="omg">
+    <select multiple="multiple" name="choices">
+        <option>a</option>
+        <option>b</option>
+        <option>c</option>
+        <option>d</option>
+    </select>
+    <input type="button" onClick="report();">
+</form>
+
+<script>
+function report() {
+    var choices = document.omg.choices;
+    for (var i = 0; i < choices.length; i++) {
+        if (choices[i].selected == true) {
+            alert(choices[i].value);
+        }
+    }
+}
+</script>
+
 {% endblock %}

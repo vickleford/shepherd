@@ -4,18 +4,38 @@
         {{ super() }}
         <script src="{{ url_for('static', filename='jquery-1.10.2.min.js') }}"></script>
         <script src="{{ url_for('static', filename='mustache.js') }}"></script>
-        <script src="http://mbostock.github.com/d3/d3.v2.js"></script>
+        <!-- <script src="http://mbostock.github.com/d3/d3.v2.js"></script> -->
+        <script src="{{ url_for('static', filename='d3.js') }}"></script>
         <script src="{{ url_for('static', filename='metrics.js') }}"></script>
         <script>
         function send(entityid, checkid) {
             var start = new Date(document.graphsettings.starttime.value).getTime();
             var end = new Date(document.graphsettings.endtime.value).getTime();
             var density = document.graphsettings.density.value;
-            var metrics = document.graphsettings.metrics.value;
+            var metricsBox = document.graphsettings.metrics;
+            //var metrics = document.graphsettings.metrics.value;
             
             qs = { 'starttime': start, 'endtime': end, 'density': density }
             
-            getMetrics(entityid, checkid, metrics, qs);
+            //getMetrics(entityid, checkid, metrics, qs);
+            results = new Array();
+            for (var i = 0; i < metricsBox.length; i ++) {
+                if (metricsBox[i].selected == true) {
+                    console.log(entityid);
+                    console.log(checkid);
+                    console.log(metricsBox[i].value);
+                    console.log(qs);
+                    var dataPart = getMetrics(entityid, checkid, metricsBox[i].value, qs);
+                    console.log("data part is " + dataPart);
+                    results.push(dataPart);
+                }
+            }
+            
+            if (results.length > 0) {
+                drawGraph('what the fuck', results, start, end);
+            } else {
+                alert("Select one or more metrics");
+            }
         }
         function paddingFilter(strIn) {
             return ("0" + strIn).slice(-2);
@@ -102,21 +122,21 @@
 			    margin-right: 35px;
 			    display: inline;
 		    }
+		    
+		    .label {
+		        font-weight: bold;
+		        fill: black;
+	        }
 		</style>
 {% endblock %}
 {% block content %}
 <h1>{{ check['label']|e }}</h1>
-{% if check['monitoring_zones_poll'] is iterable() %}
-{% for mz in check['monitoring_zones_poll']|sort %}
-{{ mz|e }}
-{% endfor %}
-{% endif %}
 <div id="graph" class="aGraph"></div>
 
 <form name="graphsettings">
     Start (UTC) <input type="datetime" name="starttime" size="22" required>
     End (UTC) <input type="datetime" name="endtime" size="22" required>
-    Metric <select name="metrics">
+    Metric <select name="metrics" multiple="multiple" size="6">
     {% for metric in metrics['values']|sort(attribute='name') %}
     <option>{{ metric['name']|e }}</option>
     {% endfor %}
