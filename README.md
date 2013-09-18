@@ -1,13 +1,19 @@
 Shepherd is a MaaS dashboard to show you what's going on with your monitors and alerts at a glance. 
 It's supposed to be read-only so you can distribute the link to it for other people to view.
 
+### Installing dependencies
+
+Once you've cloned the repository, run the following command to install dependencies:
+
+    sudo pip install -r requirements.txt
+    
 ### Configuring
 
 Put string values for APIKEY and APIUSER in any python file
 
     # anywhere.py
-    APIUSER=raxcloudusername
-    APIKEY=39484389jg39gljg9sn398egou
+    APIUSER='raxcloudusername'
+    APIKEY='39484389jg39gljg9sn398egou'
     
 ### Running
 
