@@ -6,11 +6,16 @@ from rackspace.monitoring import MonitoringClient
 
 
 app = Flask(__name__)
+app.debug = True
 app.config.from_envvar(expanduser('SHEPHERD_CONFIG'))
 app.jinja_env.filters['ms2utc'] = ms2utc
 
-rax_mon = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
-
+#rax_mon() = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
+def rax_mon():
+    rm = MonitoringClient(app.config.get('APIUSER'), app.config.get('APIKEY'))
+        
+    return rm
+        
 
 def _tag_alarm_labels(overview):
     # latest alarm states don't come with alarm labels ;(
@@ -32,7 +37,7 @@ def index():
     
 @app.route('/overview')
 def overview():
-    details = rax_mon.get_overview()
+    details = rax_mon().get_overview()
     
     # latest alarm states don't come with alarm labels ;(
     labels = {}
@@ -53,10 +58,10 @@ def overview():
 
 @app.route('/entity/<entityid>')
 def entity_overview(entityid):
-    entity = rax_mon.get_entity(entityid)
-    checks = rax_mon.get_checks(entityid)
-    alarms = rax_mon.get_alarms(entityid)
-    overview = rax_mon.get_overview(entities=[entity['id']])
+    entity = rax_mon().get_entity(entityid)
+    checks = rax_mon().get_checks(entityid)
+    alarms = rax_mon().get_alarms(entityid)
+    overview = rax_mon().get_overview(entities=[entity['id']])
     
     rendered_template = render_template('entity.html', 
                                         entity=entity, 
@@ -70,14 +75,14 @@ def entity_overview(entityid):
 
 @app.route('/entity/<entityid>/alarm/<alarmid>')
 def alarm(entityid, alarmid):
-    details = rax_mon.get_alarm(entityid, alarmid)
+    details = rax_mon().get_alarm(entityid, alarmid)
     
     return render_template('alarm.html', entity=entityid, alarm=details)
     
 
 @app.route('/history/<entityid>/<alarmid>')
 def alarm_history(entityid, alarmid):
-    details = rax_mon.discover_alarm_history(entityid, alarmid)
+    details = rax_mon().discover_alarm_history(entityid, alarmid)
     details.update({'entity_id': entityid, 'alarm_id': alarmid})
     
     return jsonify(details)
@@ -86,7 +91,7 @@ def alarm_history(entityid, alarmid):
 @app.route('/history/<entityid>/<alarmid>/<checkid>')
 def list_alarm_history(entityid, alarmid, checkid):
     marker = request.args.get('marker')
-    details = rax_mon.list_alarm_history(entityid, alarmid, checkid, marker=marker)
+    details = rax_mon().list_alarm_history(entityid, alarmid, checkid, marker=marker)
     details.update({'entity_id': entityid, 'alarm_id': alarmid})
     
     return jsonify(details)
@@ -94,7 +99,7 @@ def list_alarm_history(entityid, alarmid, checkid):
   
 @app.route('/history/<entityid>/<alarmid>/<checkid>/<uuid>')
 def get_alarm_history(entityid, alarmid, checkid, uuid):
-    details = rax_mon.get_alarm_history(entityid, alarmid, checkid, uuid)
+    details = rax_mon().get_alarm_history(entityid, alarmid, checkid, uuid)
     details.update({'entity_id': entityid, 'alarm_id': alarmid})
     
     return jsonify(details)
@@ -102,8 +107,8 @@ def get_alarm_history(entityid, alarmid, checkid, uuid):
 
 @app.route('/metrics/<entityid>/<checkid>')
 def metrics(entityid, checkid):
-    check = rax_mon.get_check(entityid, checkid)
-    metrics = rax_mon.list_metrics(entityid, checkid)
+    check = rax_mon().get_check(entityid, checkid)
+    metrics = rax_mon().list_metrics(entityid, checkid)
 
     return render_template('metrics.html', entityid=entityid, check=check, metrics=metrics)
         
@@ -116,7 +121,7 @@ def get_metrics(entityid, checkid, metricname):
                'metric': metricname
              }
              
-    plot = rax_mon.fetch_data_points(entityid, checkid, metricname, **params)
+    plot = rax_mon().fetch_data_points(entityid, checkid, metricname, **params)
     
     return jsonify(plot)
     
